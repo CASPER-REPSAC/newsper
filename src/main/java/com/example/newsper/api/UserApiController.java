@@ -84,10 +84,18 @@ public class UserApiController {
     @PostMapping("/join")
     @Unauthorized
     @Operation(summary = "회원 가입", description = "DB에 회원 정보를 등록합니다.")
-    // revert: see code before commit 1e2fbd6
-    public ResponseEntity<?> join(@RequestBody UserDto ignoredDto) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(errorCodeService.setErrorCodeBody(ErrorCode.DISABLED_FEATURE));
+    public ResponseEntity<?> join(@RequestBody JoinDto dto) {
+        UserEntity user = userService.findById(dto.getId());
+        UserDto userDto = dto.toUserDto();
+
+        if (!dto.isValid())
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorCodeService.setErrorCodeBody(ErrorCode.SIGNUP_MISSING_PARAMETER));
+        if (user != null || dto.getId().equals("guest"))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorCodeService.setErrorCodeBody(ErrorCode.SIGNUP_DUPLICATE_ID));
+
+        userService.newUser(userDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/pwupdate")

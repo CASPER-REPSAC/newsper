@@ -22,6 +22,9 @@ public enum UserRole {
     }
 
     public static UserRole valueOfRole(String role) {
+        if (role == null) {
+            return GUEST;
+        }
         role = role.toLowerCase();
         for (UserRole userRole : values()) {
             if (userRole.getRole().equals(role)) {
