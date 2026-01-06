@@ -1,5 +1,6 @@
 package com.example.newsper.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
@@ -21,14 +22,12 @@ public class JoinDto {
     @Schema(description = "표시할 별명")
     private String nickname;
 
-    @Schema(description = "이메일 인증키")
-    private String emailKey;
-
     public UserDto toUserDto() {
         return new UserDto(id, pw, email, name, nickname, null, null, null, null);
     }
 
+    @JsonIgnore
     public boolean isValid() {
-        return id != null && pw != null && email != null && name != null && nickname != null && emailKey != null;
+        return id != null && pw != null && email != null && name != null && nickname != null;
     }
 }

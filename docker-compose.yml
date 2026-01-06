@@ -9,7 +9,7 @@ services:
         - .env
         - .database.env
   mysql:
-    image: mysql:lts
+    image: mysql:8.0
     env_file: .database.env
   redis:
     image: redis:alpine

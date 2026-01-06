@@ -39,10 +39,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("*")
+                .allowedOrigins("http://localhost:3000", "https://www.casper.or.kr")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(false);
+                .allowCredentials(true)
+                .maxAge(3600);
     }
     static class CustomPathResourceResolver extends PathResourceResolver {
         @SuppressWarnings("NullableProblems")
